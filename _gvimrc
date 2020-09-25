@@ -1,0 +1,544 @@
+
+" syntax on をオンにすると、メニューバーが文字化けする。直すには set encoding=utf-8 を有効にする必要がある。
+" https://qiita.com/meio/items/08143eacd174ac0f7bd5
+set encoding=utf-8
+set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileformats=unix,dos,mac
+syntax on
+
+" https://qiita.com/enomotok/items/9d38b716fe883675d35b    imsearchの-1はiminsertの値を参照するという意味
+set iminsert=0
+set imsearch=-1
+
+" カーソルが何行目の何列目に置かれているかを表示する
+set ruler
+
+scriptencoding utf-8
+
+"設定ファイルを読み直す、コマンドモードで
+" :source ~/_gvimrc
+" :source ~/.gvimrc
+" wsl の場合、windows側からファイルを編集するとパーミッションが無くなるので、下記chmodどっちかをして直すこと。
+"    chmod 644 ~/.vimrc
+"    chmod 600 ~/.vimrc
+
+" 縦幅　デフォルトは24
+set lines=45
+" 横幅　デフォルトは80
+set columns=160
+
+set number
+set autoindent
+set hidden
+
+" タブを表示するときの幅
+set tabstop=4
+" タブを挿入するときの幅
+"set shiftwidth=4
+" タブをタブとして扱う(スペースに展開しない)
+set noexpandtab
+
+set softtabstop=0
+
+" https://qiita.com/ymiyamae/items/06d0f5ce9c55e7369e1f
+"set autoindent          "改行時に前の行のインデントを計測
+"set smartindent         "改行時に入力された行の末尾に合わせて次の行のインデントを増減する 
+"set cindent             "Cプログラムファイルの自動インデントを始める
+"set smarttab            "新しい行を作った時に高度な自動インデントを行う
+"set expandtab           "タブ入力を複数の空白に置き換える
+"set softtabstop=0
+
+" gVim をタブエディタ風にする！
+" https://www.mk-mode.com/octopress/2012/06/04/04002036/
+set showtabline=2
+
+" 行の折り返しをやる、やらない。
+set wrap
+"set nowrap
+
+"######################################################################################################################
+"折り返されたところが見やすくなるように、showbreakキーを登録しておく
+"https://qiita.com/ssh0/items/9e7f0d8b8f033183dd0b
+" showbreaks
+"set showbreak=?
+set showbreak=<WRAP>
+
+" 入力モードでのカーソル移動
+"https://qiita.com/ssh0/items/9e7f0d8b8f033183dd0b
+"inoremap <C-j> <Down>
+"inoremap <C-k> <Up>
+"inoremap <C-h> <Left>
+"inoremap <C-l> <Right>
+
+"######################################################################################################################
+" https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
+" 挿入モードに入った時にカーソル形状が縦線で点滅に、置換モードでは下線で点滅に、挿入モード/置換モードから出た時に箱型で点滅に変わるようになります。 
+"let &t_SI .= "\e[5 q"
+"let &t_SR .= "\e[3 q"
+"let &t_EI .= "\e[1 q"
+
+
+"######################################################################################################################
+" imeを常にオフにする。ただし、Kaoriya版vimのみらしい
+"set imdisable
+
+" ESCで入力モードを抜けると、IMEをOFF
+" http://nobeans.hatenablog.com/entry/20090211/1234326782
+inoremap <ESC> <ESC>:set iminsert=0<CR>
+
+"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
+"（なお、AutoHotKey でも対応した。これにより、teratermなどで編集中にも対応できるはず）
+nnoremap <ESC> <ESC>:set iminsert=0<CR>
+noremap <ESC> <ESC>:set iminsert=0<CR>
+vnoremap <ESC> <ESC>:set iminsert=0<CR>
+
+" http://d.hatena.ne.jp/fuenor/20090416/1239834980
+" "挿入モード終了時にIME状態を保存しない
+inoremap <silent> <ESC> <ESC>
+inoremap <silent> <C-[> <ESC>
+" IMEモード固定
+inoremap <silent> <C-j> <C-^>
+" ↑の「入力モードでのカーソル移動」と重なるので注意
+
+"ノーマルモード（コマンドモード）の<C-^>を無効化←AutoHotKeyと組み合わせる
+"http://blog.blueblack.net/item_393
+nnoremap <silent> <C-^> <Nop>
+
+"######################################################################################################################
+
+" コマンドモードだとimeそのものをoffにする。windows のkaoriya版gvimに対応。（wslのvimでは動作不可）
+" 置換するとき :%s///g で２バイト文字が使えなくなるので、止める。
+" if has('win32')
+" 	inoremap <ESC> <ESC>:set iminsert=0<CR>
+" 	inoremap <ESC> <ESC>:set imdisable<CR>
+" "	" 挿入モードに入った場合、imeをonにしたいが、ここが動作しない。
+" "	augroup InsertEnter
+" "		set iminsert=1
+" "		set noimdisable
+" "	augroup END
+" " InsertEnterで挿入モードを拾えないので、i , I など列挙しておく。
+" " http://vimblog.hatenablog.com/entry/vimrc_key_mapping
+" 	nnoremap i <ESC>:set noimdisable<CR>i
+" 	nnoremap I <ESC>:set noimdisable<CR>I
+" 	nnoremap a <ESC>:set noimdisable<CR>a
+" 	nnoremap A <ESC>:set noimdisable<CR>A
+" 	nnoremap R <ESC>:set noimdisable<CR>R
+" 	nnoremap r <ESC>:set noimdisable<CR>r
+" elseif has('mac')
+" 	let ostype = "Mac"
+" elseif has('unix')
+" 	let ostype = "Mac"
+" else
+" 	let ostype = system("uname")
+" endif
+
+"######################################################################################################################
+" WSL の Vim でもインサートモードを抜けるときに日本語入力を OFF にしたい
+" https://mmktomato.github.io/2018/04/02/disable-ime-on-wsl-vim.html
+function! s:isWsl()
+    return filereadable('/proc/sys/fs/binfmt_misc/WSLInterop')
+endfunction
+if s:isWsl() && executable('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe')
+    augroup insertLeave
+        autocmd!
+        autocmd InsertLeave * :call system('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')
+    augroup END
+endif
+
+"######################################################################################################################
+"https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
+" Tera Term では IME の状態を制御する為の独自の制御シーケンスをサポートしています。 この制御シーケンスを利用すれば、モードにより IME の有効/無効を切り替えるといった事が出来るようになります。
+" .vimrc に以下の設定を追加すると、挿入モードから抜けた時に IME をオフにし、再度挿入モードに入った時に IME の状態を元に戻すようになります。
+
+let &t_SI .= "\e[<r"
+let &t_EI .= "\e[<s\e[<0t"
+let &t_te .= "\e[<0t\e[<s"
+
+set timeoutlen=100
+
+let &t_SI .= "\e[?7727h"
+let &t_EI .= "\e[?7727l"
+inoremap <special> <Esc>O[ <Esc>
+
+"######################################################################################################################
+" このプラグインを使うと編集モードでCTRL+JでIMEを切り替え出来る。Linux でも使えるらしい
+" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-japanese/ime-control#install
+" set runtimepath+=C:/bin64/vim/plugins/im_control.vim-master
+
+"######################################################################################################################
+" viで日本語の文字コードを自動判別
+" http://d.hatena.ne.jp/over80/20080907/1220794834
+set encoding=utf-8
+set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
+
+"######################################################################################################################
+" コマンドモード時、y , p を押すと、alt + e + c , alt + e + p を押すようにする。kaoriya版gvim対応
+if has('win32')
+	" これを設定したせいで、yy （カレント行のコピー）が出来なくなったかも
+	nnoremap y y<M-e><M-c>
+	nnoremap p p<M-e><M-p>
+elseif has('mac')
+	let ostype = "Mac"
+elseif has('unix')
+	let ostype = "Mac"
+else
+	let ostype = system("uname")
+endif
+
+"######################################################################################################################
+" ビジュアルモードで選択したテキストが、クリップボードに入るようにする。
+" http://nanasi.jp/articles/howto/editing/clipboard.html
+
+" 次の設定をvimエディタの設定ファイルに書くと、 ビジュアルモードで選択したテキストがクリップボードに入るようになります。
+" ビジュアルモードの選択範囲を変更した瞬間に、 その選択したテキストでクリップボードのデータが書き換えられていきます。
+" この機能を有効にする設定の書き方は、GUI版のvimエディタとそれ以外で違うので、 気をつけてください。
+" " GUI版vimエディタで、この機能を有効にするなら、この設定を追加する。
+"set guioptions+=a " この設定を有効にするとyを押すのを怠けて忘れるので止めておく。
+" " GUI版でない場合は、こちらの設定を追加する。
+"set clipboard+=autoselect
+" 
+" yankしたテキストが無名レジスタだけでなく、*レジスタにも入るようにする。
+" 次の設定を有効にすると、通常、「無名レジスタ」に入る、 ヤンク、カットの操作で指定したテキストが、「*レジスタ」にも入るようになります。
+" 「*レジスタ」にデータを入れると、クリップボードにデータが入るので、
+" vimエディタでヤンク、カットしたテキストを、 他のアプリケーションで即ペーストして使用できることになります。
+" " 無名レジスタに入るデータを、*レジスタにも入れる。
+set clipboard+=unnamed
+
+" ヤンクした内容が消えないようにする
+" https://qiita.com/ykyk1218/items/8f5471c5e90cc83fd407
+noremap PP "0p
+
+" ヤンクしたあとに削除してもヤンクした文字列を貼り付けられるようにする
+" http://d.hatena.ne.jp/pinoyuki/20120425/p1
+nnoremap gy "0P
+
+" https://mask.hatenadiary.com/entry/2014/06/02/104809
+" 削除キーでyankしない
+nnoremap x "_x
+"nnoremap d "_d
+nnoremap D "_D
+
+" pやPを押した時に最後にyankしたテキストを貼り付けるようにする←出来るのだが、osのクリップボードの文字列ではなく、vimの0番レジスターを使うので、意図していたのと違う
+" https://project-p.jp/halt/2012/06/27/011809/
+"nnoremap p "0p
+"nnoremap P "0P
+
+" vimの連続コピペできない問題
+" visualモードで選択して「Ctrl-p」で貼り付ける
+" https://qiita.com/fukajun/items/bd97a9b963dae40b63f5
+vnoremap <silent> <C-p> "0p<CR>
+
+
+"複数行が連続してインデントできない！
+"ビジュアルモードで選択して > を入力するとインデントができます。
+"が、ビジュアルモードが解除されてしまうため連続して入力することができません。
+"そこで以下の設定を.vimrcに追加
+" https://qiita.com/ykyk1218/items/8f5471c5e90cc83fd407
+vnoremap > >gv
+vnoremap < <gv
+
+"######################################################################################################################
+" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-color
+
+"######################################################################################################################
+" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-color
+" 下でカーソルのカラースキームを決めているので、ここで全体のカラースキームを決めないといけない
+colorscheme darkblue
+"######################################################################################################################
+".gvimrc カラー設定
+"カラー設定した後にCursorIMを定義する方法
+"colorscheme mycolor
+
+if has('multi_byte_ime')
+"  highlight Cursor guifg=NONE guibg=DarkBlue
+  highlight Cursor guifg=NONE guibg=Yellow
+"  highlight CursorIM guifg=NONE guibg=Red
+  highlight CursorIM guifg=NONE guibg=Cyan
+endif
+
+"######################################################################################################################
+"挿入モード時、ステータスラインの色を変更
+"######################################################################################################################
+let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
+
+if has('syntax')
+  augroup InsertHook
+    autocmd!
+    autocmd InsertEnter * call s:StatusLine('Enter')
+    autocmd InsertLeave * call s:StatusLine('Leave')
+  augroup END
+endif
+
+let s:slhlcmd = ''
+function! s:StatusLine(mode)
+  if a:mode == 'Enter'
+    set cursorline
+    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+    silent exec g:hi_insert
+  else
+    set nocursorline
+    highlight clear StatusLine
+    silent exec s:slhlcmd
+  endif
+endfunction
+
+function! s:GetHighlight(hi)
+  redir => hl
+  exec 'highlight '.a:hi
+  redir END
+  let hl = substitute(hl, '[\r\n]', '', 'g')
+  let hl = substitute(hl, 'xxx', '', '')
+  return hl
+endfunction
+
+if has('unix') && !has('gui_running')
+  " ESC後にすぐ反映されない対策
+  inoremap <silent> <ESC> <ESC>
+endif
+
+"######################################################################################################################
+"全角スペースを表示
+"######################################################################################################################
+"コメント以外で全角スペースを指定しているので scriptencodingと、
+"このファイルのエンコードが一致するよう注意！
+"全角スペースが強調表示されない場合、ここでscriptencodingを指定すると良い。
+"scriptencoding cp932
+
+"デフォルトのZenkakuSpaceを定義
+function! ZenkakuSpace()
+  highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
+endfunction
+
+if has('syntax')
+  augroup ZenkakuSpace
+    autocmd!
+    " ZenkakuSpaceをカラーファイルで設定するなら次の行は削除
+    autocmd ColorScheme       * call ZenkakuSpace()
+    " 全角スペースのハイライト指定
+    autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+    autocmd VimEnter,WinEnter * match ZenkakuSpace '\%u3000'
+  augroup END
+  call ZenkakuSpace()
+endif
+"######################################################################################################################
+
+"Tab、行末の半角スペースを明示的に表示する。
+set list
+set listchars=tab:^\ ,trail:~
+
+
+"######################################################################################################################
+" http://nanasi.jp/articles/howto/file/seemingly-unneeded-file.html#id5
+" スワップファイルの作成を止める←止めると同時に複数のインスタンスで同じファイルを編集出来てしまうので、これを有効にするのは危険
+"set noswapfile
+
+" Windowsの場合のスワップファイルの作成ディレクトリ指定の例。
+":set directory=C:/Temp
+":set directory=~/vimfiles/tmp
+":set directory=.
+
+" Mac OSXの場合のスワップファイルの作成ディレクトリ指定の例。
+":set directory=/tmp
+":set directory=~/.vim/tmp
+":set directory=.
+
+"######################################################################################################################
+" バックアップファイルを作成しない
+set nobackup
+
+" Windowsの場合のバックアップファイルの作成ディレクトリ指定の例。
+":set backupdir=C:/Temp
+":set backupdir=~/vimfiles/tmp
+":set backupdir=.
+
+" viminfoファイルを作成しない
+":set viminfo=
+
+"######################################################################################################################
+" windows で関連付けたアプリケーションで実行する。
+function! EXECUTE_FILE ()
+	:silent ! start %
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! EXEC call EXECUTE_FILE()
+command! F5 call EXECUTE_FILE()
+command! EX call EXECUTE_FILE()
+"######################################################################################################################
+" 開いているファイル名をクリップボードにコピーする
+" https://qiita.com/sfuta/items/93fe58e6a7953413a815
+function! Fn_clip ()
+	let @*=expand('%:p')
+"	:echo @*
+	:echo ('開いているファイル名をクリップボードにコピーする　：　' . @*)
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! FN call Fn_clip()
+"######################################################################################################################
+" 開いているファイル名の場所をエクスプローラーで表示する←当然windowsのみ
+function! Open_dir ()
+"	:silent ! start %:h
+	let @*=expand('%:p')
+	if has('win32')
+		:echo ('windows')
+	"	:echo 'explorer.exe /e,  /select, ' . '\"' .  @*  . '\"'
+		:call system('explorer.exe /e,  /select, ' . '"' .  @*  . '"')
+	elseif has('mac')
+		:echo ('mac')
+	elseif has('unix')
+		:echo ('unix')
+	else
+		:echo ('other')
+	endif
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! OD call Open_dir()
+"######################################################################################################################
+" ls の代わり
+function! LS ()
+	:ls
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! L call LS()
+"######################################################################################################################
+" 新しいバッファ
+function! New_buffer ()
+	:enew
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! NB call New_buffer()
+"######################################################################################################################
+" 新しいタブ
+function! New_tab ()
+	:tabnew
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! NT call New_tab()
+"######################################################################################################################
+" 左のタブ
+function! Left_tab ()
+	:tabp
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! LT call Left_tab()
+command! L call Left_tab()
+"######################################################################################################################
+" 右のタブ
+function! Right_tab ()
+	:tabn
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! RT call Right_tab()
+command! R call Right_tab()
+" "######################################################################################################################
+" " 開いているファイルのエンコードを得る
+" function! Get_encode_of_currnet_file ()
+" 	:se fenc?
+" endfunction
+" " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+" command! GET_ENC call Get_encode_of_currnet_file()
+" command! GETENC call Get_encode_of_currnet_file()
+" "######################################################################################################################
+" " 開いているファイルの文字コードを変える
+" function! Set_encode_of_currnet_file (char_code)
+" 	:e ++enc=:char_code
+" endfunction
+" " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+" command! SET_ENC call Get_encode_of_currnet_file()
+" command! SETENC call Get_encode_of_currnet_file()
+"######################################################################################################################
+" 開いているファイル名の履歴を作成する←まだwindowsのみ
+function! MAKE_HISTORY ()
+	":silent ! C:/bin/make_history.cmd   "%:p"
+	if has('win32')
+"		:silent ! C:/bin/make_history_classic.cmd   "%:p"
+"		:silent ! C:/bin/make_history.cmd   "%:p"
+		:silent ! C:\Miniconda3\python.exe    C:\bin\make_history.py   "%:p"
+	elseif has('mac')
+	    let ostype = "Mac"
+	    python ~/make_history_py.py   "%:p"
+	elseif has('unix')
+	    let ostype = "Mac"
+	    python ~/make_history_py.py   "%:p"
+	else
+	    let ostype = system("uname")
+	endif
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! MK call MAKE_HISTORY()
+command! BK call MAKE_HISTORY()
+"######################################################################################################################
+" 開いているURL名をブラウザに送る。
+" http://d.hatena.ne.jp/shunsuk/20110508/1304865150
+function! HandleURI()
+"  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
+"  ヤフオクだとURLにセミコロンが含まれてるので、セミコロンを除去した。
+"  タブを区切り文字にした。
+"  URL に : が含まれていると、そこで止まってしまうので、完全ではない。
+"	let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:\t]*')
+"  ヤフオクだとURLにセミコロンが含まれてるので、セミコロンを除去した。
+	let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,\t]*')
+" # をエスケープ
+	let s:uri = substitute(s:uri , "#","\\\\#","g")
+" エンコードURLが入ってると%をファイル名に展開してしまうエラーがあるため、エスケープ
+	let s:uri = substitute(s:uri , "%","\\\\%","g")
+	echo s:uri
+	if s:uri != ""
+	" 元がmac用のようだ。
+"		exec "!open \"" . s:uri . "\""
+		exec "!start \"" . s:uri . "\""
+	else
+		echo "No URI found in line."
+	endif
+endfunction
+
+"map <Leader>w :call HandleURI()<CR>
+command! BR call HandleURI()
+command! URL call HandleURI()
+"######################################################################################################################
+":%s/検索語/置換語/g  の関数化をやるか。
+
+"######################################################################################################################
+" open-browser.vim プラグインというのがあるらしいが、インストール出来ない
+" https://www.vim.org/scripts/script.php?script_id=3133
+" https://easyramble.com/open-url-with-browser-from-vim.html
+
+"######################################################################################################################
+" まだ.vimrcを開いていなければ新規タブで開く
+" すでに.vimrcを開いていればそのウィンドウに移動する
+" http://kannokanno.hatenablog.com/entry/2013/05/31/205858
+" function! s:find_tabnr(bufnr)
+"   for tabnr in range(1, tabpagenr("$"))
+"     if index(tabpagebuflist(tabnr), a:bufnr) !=# -1
+"       return tabnr
+"     endif
+"   endfor
+"   return -1 " ブブー
+" endfunction
+" 
+" function! s:find_winnr(bufnr)
+"   for winnr in range(1, winnr("$"))
+"     if a:bufnr ==# winbufnr(winnr)
+"       return winnr
+"     endif
+"   endfor
+"   return 1 " 見つからなかった場合は最初のウィンドウ
+" endfunction
+" 
+" function! s:recycle_open(default_open, path)
+"   let default_action = a:default_open . ' ' . a:path
+"   if bufexists(a:path)
+"     let bufnr = bufnr(a:path)
+"     let tabnr = s:find_tabnr(bufnr)
+"     if tabnr ==# -1
+"       execute default_action
+"       return
+"     endif
+"     execute 'tabnext ' . tabnr
+"     let winnr = s:find_winnr(bufnr)
+"     execute winnr . 'wincmd w'
+"   else
+"     execute default_action
+"   endif
+" endfunction
+" nnoremap <Space>. :call <SID>recycle_open('tabedit', $MYVIMRC)<CR>
+
