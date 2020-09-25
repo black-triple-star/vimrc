@@ -3,12 +3,18 @@
 " UTF8 , LF 
 " ##############################################################################
 
-" syntax on をオンにすると、メニューバーが文字化けする。直すには set encoding=utf-8 を有効にする必要がある。
+"######################################################################################################################
+" viで日本語の文字コードを自動判別
+" http://d.hatena.ne.jp/over80/20080907/1220794834
 " https://qiita.com/meio/items/08143eacd174ac0f7bd5
 set encoding=utf-8
-set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+"set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
 set fileformats=unix,dos,mac
+
 syntax on
+
+
 
 " https://qiita.com/enomotok/items/9d38b716fe883675d35b    imsearchの-1はiminsertの値を参照するという意味
 set iminsert=0
@@ -169,11 +175,6 @@ inoremap <special> <Esc>O[ <Esc>
 " https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-japanese/ime-control#install
 " set runtimepath+=C:/bin64/vim/plugins/im_control.vim-master
 
-"######################################################################################################################
-" viで日本語の文字コードを自動判別
-" http://d.hatena.ne.jp/over80/20080907/1220794834
-set encoding=utf-8
-set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
 
 "######################################################################################################################
 " コマンドモード時、y , p を押すと、alt + e + c , alt + e + p を押すようにする。kaoriya版gvim対応
