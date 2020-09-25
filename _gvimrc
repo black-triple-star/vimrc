@@ -441,14 +441,46 @@ function! Get_encode_of_currnet_file ()
 endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! GETENC call Get_encode_of_currnet_file()
-" "######################################################################################################################
-" " 開いているファイルの文字コードを変える
-" function! Set_encode_of_currnet_file (char_code)
-" 	:e ++enc=:char_code
-" endfunction
-" " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
-" command! SET_ENC call Get_encode_of_currnet_file()
-" command! SETENC call Get_encode_of_currnet_file()
+"######################################################################################################################
+" エンコーディングを指定してファイルを開きなおす
+function! Set_encode_of_currnet_file (charcode)
+	:echo (a:charcode)
+"	let l:c_dode = a:charcode
+"	:echo (l:c_dode)
+"	if c_code ==? 'utf'
+"		:e ++enc=utf-8
+"	endif
+	" 引数の文字列が合っていても、下記も条件に合致しない
+	if a:charcode ==? "euc"
+		:e ++enc=euc-jp
+	elseif a:charcode ==? "sjis"
+		:e ++enc=shift_jis
+	elseif a:charcode ==? "utf"
+		:e ++enc=utf-8
+	elseif a:charcode ==? "utf8"
+		:e ++enc=utf-8
+	else
+		:echo ("not found")
+		:echo (a:charcode)
+	endif
+endfunction
+command! SETENC call Set_encode_of_currnet_file(<f-args>)
+" ######################################################################################################################
+"保存時の文字コードを変える
+":set fenc=sjis
+":set fenc=cp932
+":set fenc=utf-8
+" ---------------------------------------------------------------
+function! Set_utf8 ()
+	:set fenc=utf-8
+endfunction
+command! SETUTF8 call Set_utf8()
+" ---------------------------------------------------------------
+function! Set_sjis ()
+"	:set fenc=sjis
+	:set fenc=cp932
+endfunction
+command! SETSJIS call Set_sjis()
 "######################################################################################################################
 " 開いているファイル名の履歴を作成する←まだwindowsのみ
 function! MAKE_HISTORY ()
