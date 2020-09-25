@@ -434,14 +434,13 @@ endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! RT call Right_tab()
 command! R call Right_tab()
-" "######################################################################################################################
-" " 開いているファイルのエンコードを得る
-" function! Get_encode_of_currnet_file ()
-" 	:se fenc?
-" endfunction
-" " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
-" command! GET_ENC call Get_encode_of_currnet_file()
-" command! GETENC call Get_encode_of_currnet_file()
+" ######################################################################################################################
+" 開いているファイルのエンコードを得る
+function! Get_encode_of_currnet_file ()
+	:se fenc?
+endfunction
+" ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
+command! GETENC call Get_encode_of_currnet_file()
 " "######################################################################################################################
 " " 開いているファイルの文字コードを変える
 " function! Set_encode_of_currnet_file (char_code)
