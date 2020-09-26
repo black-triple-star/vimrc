@@ -14,11 +14,44 @@ set fileformats=unix,dos,mac
 
 syntax on
 
-
-
 " https://qiita.com/enomotok/items/9d38b716fe883675d35b    imsearchの-1はiminsertの値を参照するという意味
 set iminsert=0
 set imsearch=-1
+
+"######################################################################################################################
+" *.un~ ファイルを作らない
+set noundofile
+
+".un~ファイルのパス
+"set undodir=/PATH_TO/YOUR/UNDO_FILE_DIR/
+
+"######################################################################################################################
+" http://nanasi.jp/articles/howto/file/seemingly-unneeded-file.html#id5
+" スワップファイルの作成を止める←止めると同時に複数のインスタンスで同じファイルを編集出来てしまうので、これを有効にするのは危険
+"set noswapfile
+
+" Windowsの場合のスワップファイルの作成ディレクトリ指定の例。
+":set directory=C:/Temp
+":set directory=~/vimfiles/tmp
+":set directory=.
+
+" Mac OSXの場合のスワップファイルの作成ディレクトリ指定の例。
+":set directory=/tmp
+":set directory=~/.vim/tmp
+":set directory=.
+
+"######################################################################################################################
+" バックアップファイルを作成しない
+set nobackup
+
+" Windowsの場合のバックアップファイルの作成ディレクトリ指定の例。
+":set backupdir=C:/Temp
+":set backupdir=~/vimfiles/tmp
+":set backupdir=.
+
+" viminfoファイルを作成しない
+":set viminfo=
+"######################################################################################################################
 
 " カーソルが何行目の何列目に置かれているかを表示する
 set ruler
@@ -331,33 +364,6 @@ endif
 set list
 set listchars=tab:^\ ,trail:~
 
-
-"######################################################################################################################
-" http://nanasi.jp/articles/howto/file/seemingly-unneeded-file.html#id5
-" スワップファイルの作成を止める←止めると同時に複数のインスタンスで同じファイルを編集出来てしまうので、これを有効にするのは危険
-"set noswapfile
-
-" Windowsの場合のスワップファイルの作成ディレクトリ指定の例。
-":set directory=C:/Temp
-":set directory=~/vimfiles/tmp
-":set directory=.
-
-" Mac OSXの場合のスワップファイルの作成ディレクトリ指定の例。
-":set directory=/tmp
-":set directory=~/.vim/tmp
-":set directory=.
-
-"######################################################################################################################
-" バックアップファイルを作成しない
-set nobackup
-
-" Windowsの場合のバックアップファイルの作成ディレクトリ指定の例。
-":set backupdir=C:/Temp
-":set backupdir=~/vimfiles/tmp
-":set backupdir=.
-
-" viminfoファイルを作成しない
-":set viminfo=
 
 "######################################################################################################################
 " windows で関連付けたアプリケーションで実行する。
