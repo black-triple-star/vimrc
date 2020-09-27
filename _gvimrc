@@ -496,6 +496,7 @@ function! Set_utf8 ()
 	:set fenc=utf-8
 endfunction
 command! SETUTF8 call Set_utf8()
+command! SETUTF call Set_utf8()
 " ---------------------------------------------------------------
 function! Set_sjis ()
 "	:set fenc=sjis
