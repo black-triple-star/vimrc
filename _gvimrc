@@ -398,7 +398,7 @@ endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! FN call Fn_clip()
 "######################################################################################################################
-" 開いているファイル名の場所をエクスプローラーで表示する←当然windowsのみ
+" 開いているファイル名の場所をエクスプローラーで表示する
 function! Open_dir ()
 "	:silent ! start %:h
 	let @*=expand('%:p')
@@ -408,6 +408,8 @@ function! Open_dir ()
 		:call system('explorer.exe /e,  /select, ' . '"' .  @*  . '"')
 	elseif has('mac')
 		:echo ('mac')
+		"open -a Finder.app "$HOME/Library/Application Support/Firefox/Profiles"
+		:call system('open -a Finder.app  ' . '"' .  @*  . '"')
 	elseif has('unix')
 		:echo ('unix')
 	else
