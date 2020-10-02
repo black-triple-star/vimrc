@@ -86,10 +86,10 @@ set hidden
 " タブを表示するときの幅
 set tabstop=4
 " タブを挿入するときの幅
-"set shiftwidth=4
+set shiftwidth=4
 " タブをタブとして扱う(スペースに展開しない)
 set noexpandtab
-
+set smarttab
 set softtabstop=0
 
 " https://qiita.com/ymiyamae/items/06d0f5ce9c55e7369e1f
