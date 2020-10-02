@@ -11,5 +11,6 @@ AutoBackUp
 BackUp
 .svn
 *.un~
+*.swp
 *.zip
 *.cmd
