@@ -55,11 +55,20 @@ set nobackup
 "######################################################################################################################
 " フォントの設定
 "https://qiita.com/astrsk_nakata/items/90f51a97981db494939f
-"半角文字の設定
-"set guifont=MS_Gothic:h12
-
-"全角文字の設定
-"set guifontwide=MS_Gothic:h12
+if has('win32')
+	"半角文字の設定
+	set guifont=MS_Gothic:h12
+	"全角文字の設定
+	set guifontwide=MS_Gothic:h12
+"elseif has('mac')
+"	let ostype = "Mac"
+"elseif has('unix')
+"	let ostype = "Mac"
+"else
+"	let ostype = system("uname")
+endif
+"フォントを変えたい場合、コマンドモードで以下を入力する
+":set guifont=*
 "######################################################################################################################
 
 " カーソルが何行目の何列目に置かれているかを表示する
