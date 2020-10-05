@@ -427,7 +427,8 @@ command! EX call EXECUTE_FILE()
 function! Fn_clip ()
 	let @*=expand('%:p')
 "	:echo @*
-	:echo ('開いているファイル名をクリップボードにコピーする　：　' . @*)
+"	:echo ('開いているファイル名をクリップボードにコピーする　：　' . @*)
+	:echo (@* . ' 　：　← 開いているファイル名をクリップボードにコピーする')
 endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! FN call Fn_clip()
