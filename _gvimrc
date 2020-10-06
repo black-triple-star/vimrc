@@ -140,6 +140,21 @@ set backspace=indent,eol,start
 "set showbreak=?
 set showbreak=<WRAP>
 
+
+"######################################################################################################################
+" imeを常にオフにする。ただし、Kaoriya版vimのみらしい
+"set imdisable
+
+" vimrcで定義されているモードの一覧
+" http://vimblog.hatenablog.com/entry/vimrc_key_mapping
+" モード	再割当無し	再割当有り
+" ノーマルモード＋ビジュアルモード 	noremap 	map
+" コマンドラインモード＋インサートモード 	noremap! 	map!
+" ノーマルモード 	nnoremap 	nmap
+" ビジュアル(選択)モード 	vnoremap 	vmap
+" コマンドラインモード 	cnoremap 	cmap
+" インサート(挿入)モード 	inoremap 	imap
+
 " 入力モードでのカーソル移動
 "https://qiita.com/ssh0/items/9e7f0d8b8f033183dd0b
 "inoremap <C-j> <Down>
@@ -147,27 +162,41 @@ set showbreak=<WRAP>
 "inoremap <C-h> <Left>
 "inoremap <C-l> <Right>
 
-"######################################################################################################################
-" https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
-" 挿入モードに入った時にカーソル形状が縦線で点滅に、置換モードでは下線で点滅に、挿入モード/置換モードから出た時に箱型で点滅に変わるようになります。 
-"let &t_SI .= "\e[5 q"
-"let &t_SR .= "\e[3 q"
-"let &t_EI .= "\e[1 q"
-
-
-"######################################################################################################################
-" imeを常にオフにする。ただし、Kaoriya版vimのみらしい
-"set imdisable
-
-" ESCで入力モードを抜けると、IMEをOFF
-" http://nobeans.hatenablog.com/entry/20090211/1234326782
-inoremap <ESC> <ESC>:set iminsert=0<CR>
-
-"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
-"（なお、AutoHotKey でも対応した。これにより、teratermなどで編集中にも対応できるはず）
-nnoremap <ESC> <ESC>:set iminsert=0<CR>
-noremap <ESC> <ESC>:set iminsert=0<CR>
-vnoremap <ESC> <ESC>:set iminsert=0<CR>
+if has('win32')
+	let ostype = "Windows"
+	"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
+	"ESCで入力モードを抜けるとIMEをOFF、ノーマルモードでESCを打ってもimeをoff
+	"（なお、AutoHotKey でも対応した。これにより、teratermなどで編集中にも対応できるはず）
+	inoremap <ESC> <ESC>:set imdisable<CR>
+	nnoremap <ESC> <ESC>:set iminsert=0<CR>
+	noremap <ESC> <ESC>:set iminsert=0<CR>
+	vnoremap <ESC> <ESC>:set iminsert=0<CR>
+	cnoremap <ESC> <ESC>:set iminsert=0<CR>
+" "	" 挿入モードに入った場合、imeをonにする。←が動作しない。
+" "	augroup InsertEnter
+" "		set iminsert=1
+" "		set noimdisable
+" "	augroup END
+elseif has('mac')
+	let ostype = "Mac"
+elseif has('unix')
+	let ostype = "unix"
+	"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
+"	inoremap <ESC> <ESC>:set iminsert=0<CR>
+"	nnoremap <ESC> <ESC>:set iminsert=0<CR>
+"	noremap <ESC> <ESC>:set iminsert=0<CR>
+"	vnoremap <ESC> <ESC>:set iminsert=0<CR>
+"	cnoremap <ESC> <ESC>:set iminsert=0<CR>
+	"使っている日本語入力システムに応じたコマンドを実行する
+	inoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	" cnoremap を有効にすると、コマンドモードで矢印を使うと誤動作を起こす
+"	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+else
+	let ostype = system("uname")
+endif
 
 " http://d.hatena.ne.jp/fuenor/20090416/1239834980
 " "挿入モード終了時にIME状態を保存しない
@@ -181,33 +210,6 @@ inoremap <silent> <C-j> <C-^>
 "http://blog.blueblack.net/item_393
 nnoremap <silent> <C-^> <Nop>
 
-"######################################################################################################################
-
-" コマンドモードだとimeそのものをoffにする。windows のkaoriya版gvimに対応。（wslのvimでは動作不可）
-" 置換するとき :%s///g で２バイト文字が使えなくなるので、止める。
-" if has('win32')
-" 	inoremap <ESC> <ESC>:set iminsert=0<CR>
-" 	inoremap <ESC> <ESC>:set imdisable<CR>
-" "	" 挿入モードに入った場合、imeをonにしたいが、ここが動作しない。
-" "	augroup InsertEnter
-" "		set iminsert=1
-" "		set noimdisable
-" "	augroup END
-" " InsertEnterで挿入モードを拾えないので、i , I など列挙しておく。
-" " http://vimblog.hatenablog.com/entry/vimrc_key_mapping
-" 	nnoremap i <ESC>:set noimdisable<CR>i
-" 	nnoremap I <ESC>:set noimdisable<CR>I
-" 	nnoremap a <ESC>:set noimdisable<CR>a
-" 	nnoremap A <ESC>:set noimdisable<CR>A
-" 	nnoremap R <ESC>:set noimdisable<CR>R
-" 	nnoremap r <ESC>:set noimdisable<CR>r
-" elseif has('mac')
-" 	let ostype = "Mac"
-" elseif has('unix')
-" 	let ostype = "Mac"
-" else
-" 	let ostype = system("uname")
-" endif
 
 "######################################################################################################################
 " WSL の Vim でもインサートモードを抜けるときに日本語入力を OFF にしたい
@@ -221,6 +223,13 @@ if s:isWsl() && executable('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe
         autocmd InsertLeave * :call system('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')
     augroup END
 endif
+
+"######################################################################################################################
+" https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
+" 挿入モードに入った時にカーソル形状が縦線で点滅に、置換モードでは下線で点滅に、挿入モード/置換モードから出た時に箱型で点滅に変わるようになります。 
+"let &t_SI .= "\e[5 q"
+"let &t_SR .= "\e[3 q"
+"let &t_EI .= "\e[1 q"
 
 "######################################################################################################################
 "https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
@@ -309,8 +318,6 @@ vnoremap <silent> <C-p> "0p<CR>
 vnoremap > >gv
 vnoremap < <gv
 
-"######################################################################################################################
-" https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-color
 
 "######################################################################################################################
 " https://sites.google.com/site/fudist/Home/vim-nihongo-ban/vim-color
@@ -323,9 +330,9 @@ colorscheme darkblue
 
 if has('multi_byte_ime')
 "  highlight Cursor guifg=NONE guibg=DarkBlue
-  highlight Cursor guifg=NONE guibg=Yellow
+	 highlight Cursor guifg=NONE guibg=Yellow
 "  highlight CursorIM guifg=NONE guibg=Red
-  highlight CursorIM guifg=NONE guibg=Cyan
+	highlight CursorIM guifg=NONE guibg=Cyan
 endif
 
 "######################################################################################################################
@@ -378,7 +385,7 @@ endif
 
 "デフォルトのZenkakuSpaceを定義
 function! ZenkakuSpace()
-  highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
+	highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
 endfunction
 
 if has('syntax')
@@ -436,17 +443,30 @@ command! FN call Fn_clip()
 " 開いているファイル名の場所をエクスプローラーで表示する
 function! Open_dir ()
 "	:silent ! start %:h
-	let @*=expand('%:p')
+" -----------------------------------------
+"	:p		フルパス名を展開
+"	:h		ヘッド(ディレクトリ)
+"	:t		テイル(ファイル名だけ)
+"	:r		拡張子が削除される
+"	:e		拡張子だけ
+" -----------------------------------------
+	let script_fullpath = expand('%:p')
+	let script_dir = expand('%:h')
+	let script_fn = expand('%:t')
+	echo (script_fullpath)
+"	echo (script_dir)
+"	echo (script_fn)
 	if has('win32')
 		:echo ('windows')
 	"	:echo 'explorer.exe /e,  /select, ' . '\"' .  @*  . '\"'
-		:call system('explorer.exe /e,  /select, ' . '"' .  @*  . '"')
+		:call system('explorer.exe /e,  /select, ' . '"' .   script_fullpath . '"')
 	elseif has('mac')
 		:echo ('mac')
 		"open -a Finder.app "$HOME/Library/Application Support/Firefox/Profiles"
-		:call system('open -a Finder.app  ' . '"' .  @*  . '"')
+		:call system('open -a Finder.app  ' . '"' .   script_fullpath . '"')
 	elseif has('unix')
 		:echo ('unix')
+"		:echo (script_fullpath)
 	else
 		:echo ('other')
 	endif
@@ -550,7 +570,7 @@ function! MAKE_HISTORY ()
 	    let ostype = "Mac"
 	    python ~/make_history_py.py   "%:p"
 	elseif has('unix')
-	    let ostype = "Mac"
+	    let ostype = "unix"
 	    python ~/make_history_py.py   "%:p"
 	else
 	    let ostype = system("uname")
@@ -576,9 +596,16 @@ function! HandleURI()
 	let s:uri = substitute(s:uri , "%","\\\\%","g")
 	echo s:uri
 	if s:uri != ""
-	" 元がmac用のようだ。
-"		exec "!open \"" . s:uri . "\""
-		exec "!start \"" . s:uri . "\""
+		if has('win32')
+			exec "!start \"" . s:uri . "\""
+		elseif has('mac')
+			exec "!open \"" . s:uri . "\""
+		elseif has('unix')
+			exec "!open \"" . s:uri . "\""
+		else
+			"let ostype = system("uname")
+			echo "unknown os"
+		endif
 	else
 		echo "No URI found in line."
 	endif
