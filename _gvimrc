@@ -289,15 +289,15 @@ endif
 " Tera Term では IME の状態を制御する為の独自の制御シーケンスをサポートしています。 この制御シーケンスを利用すれば、モードにより IME の有効/無効を切り替えるといった事が出来るようになります。
 " .vimrc に以下の設定を追加すると、挿入モードから抜けた時に IME をオフにし、再度挿入モードに入った時に IME の状態を元に戻すようになります。
 
-let &t_SI .= "\e[<r"
-let &t_EI .= "\e[<s\e[<0t"
-let &t_te .= "\e[<0t\e[<s"
-
-set timeoutlen=100
-
-let &t_SI .= "\e[?7727h"
-let &t_EI .= "\e[?7727l"
-inoremap <special> <Esc>O[ <Esc>
+"let &t_SI .= "\e[<r"
+"let &t_EI .= "\e[<s\e[<0t"
+"let &t_te .= "\e[<0t\e[<s"
+"
+"set timeoutlen=100
+"
+"let &t_SI .= "\e[?7727h"
+"let &t_EI .= "\e[?7727l"
+"inoremap <special> <Esc>O[ <Esc>
 
 "######################################################################################################################
 " このプラグインを使うと編集モードでCTRL+JでIMEを切り替え出来る。Linux でも使えるらしい
@@ -658,6 +658,7 @@ function! HandleURI()
 		elseif has('unix')
 "			:echo system("\"" . s:uri . "\"" )
 			" Linux の場合、URLだけを渡してもだめ。ブラウザを指定する必要がある。
+			" distroによっては、デフォルトブラウザをシンボリックリンクで保持しているかもしれない。
 			:echo system("/usr/bin/firefox" .  "  " . "\"" . s:uri . "\"" )
 		else
 			"let ostype = system("uname")
