@@ -205,7 +205,8 @@ if has('win32')
 	"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
 	"ESCで入力モードを抜けるとIMEをOFF、ノーマルモードでESCを打ってもimeをoff
 	"（なお、AutoHotKey でも対応した。これにより、teratermなどで編集中にも対応できるはず）
-	inoremap <ESC> <ESC>:set imdisable<CR>
+"	inoremap <ESC> <ESC>:set imdisable<CR>
+	nnoremap <ESC> <ESC>:set iminsert=0<CR>
 	nnoremap <ESC> <ESC>:set iminsert=0<CR>
 	noremap <ESC> <ESC>:set iminsert=0<CR>
 	vnoremap <ESC> <ESC>:set iminsert=0<CR>
