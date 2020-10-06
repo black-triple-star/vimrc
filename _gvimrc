@@ -337,6 +337,19 @@ endif
 " vimエディタでヤンク、カットしたテキストを、 他のアプリケーションで即ペーストして使用できることになります。
 " " 無名レジスタに入るデータを、*レジスタにも入れる。
 set clipboard+=unnamed
+" ---------------------------------------------------------------------------------------------------------------
+" https://takeshid.hatenadiary.jp/entry/2015/09/08/001517
+" set clipboard=unnamed
+" は yankした文字をvim上の*レジスタ(無名レジスタ)に保存するようにする設定
+" set clipboard=unnamedplus
+" は yankした文字をvim上の+レジスタ(OSのクリップボード)に保存するようにする設定
+set clipboard=unnamed,unnamedplus
+" ---------------------------------------------------------------------------------------------------------------
+" https://nanasi.jp/articles/howto/editing/clipboard.html
+" vimエディタでクリップボードを使用するには、 vimエディタが「+clipboard」でコンパイルされている必要があります。
+" vimエディタのコンパイルオプションを確認するには、 vimエディタを起動して次のコマンドを実行してください。
+" :version
+" ---------------------------------------------------------------------------------------------------------------
 
 " ヤンクした内容が消えないようにする
 " https://qiita.com/ykyk1218/items/8f5471c5e90cc83fd407
@@ -653,6 +666,8 @@ function! HandleURI()
 	if s:uri != ""
 		if has('win32')
 			exec "!start \"" . s:uri . "\""
+"			:echo system("!start " .  "  " . "\"" . s:uri . "\"" )
+"			:call system("!start C:\bin64\FirefoxPortable\App\Firefox64\firefox.exe " .  "  " . "\"" . s:uri . "\"" )
 		elseif has('mac')
 			exec "!open \"" . s:uri . "\""
 		elseif has('unix')
