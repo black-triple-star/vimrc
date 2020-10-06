@@ -3,6 +3,13 @@
 " UTF8 , LF
 " ##############################################################################
 
+"設定ファイルを読み直す、コマンドモードで
+" :source ~/_gvimrc
+" :source ~/.gvimrc
+" wsl の場合、windows側からファイルを編集するとパーミッションが無くなるので、下記chmodどっちかをして直すこと。
+"    chmod 644 ~/.vimrc
+"    chmod 600 ~/.vimrc
+
 "######################################################################################################################
 " viで日本語の文字コードを自動判別
 " http://d.hatena.ne.jp/over80/20080907/1220794834
@@ -18,12 +25,50 @@ syntax on
 set iminsert=0
 set imsearch=-1
 
+set scrolloff=2
+
+"ビープ音を消す
+set vb t_vb=
 "######################################################################################################################
 " *.un~ ファイルを作らない
 set noundofile
 
 ".un~ファイルのパス
 "set undodir=/PATH_TO/YOUR/UNDO_FILE_DIR/
+
+"######################################################################################################################
+"検索の設定
+"https://qiita.com/KeitaNakamura/items/a289822827c8655b2dcd
+set ignorecase " 大文字小文字を無視
+set smartcase  " ignorecaseと合わせることで，小文字入力の時のみ大文字小文字を無視
+"set incsearch  " インクリメンタルサーチ
+set hlsearch   " 検索結果をハイライト
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR> " ESCキー連打でハイライトを消す
+noremap <silent> <ESC><ESC> :nohlsearch<CR> " ESCキー連打でハイライトを消す
+
+"置換の際のgオプションをデフォルトで有効化する
+"set gdefault
+
+"保存時に行末の空白を削除する
+"autocmd BufWritePre * :%s/\s\+$//ge
+
+"set cursorline      " 現在の行をハイライト
+"hi clear CursorLine " 上と合わせることで行番号のみハイライト
+
+"CUIでVimを使用した際に生じるEscキーのディレイを解消（追記: 20160427）
+
+if !has('gui_running')
+	set timeout timeoutlen=1000 ttimeoutlen=50
+endif
+
+
+"######################################################################################################################
+" Vim起動時にreplace modeになる
+"https://github.com/vim-jp/issues/issues/578
+"https://qiita.com/e4bb81/items/524ae2664e48949d6bab
+" Vim起動時にreplace modeになる場合、ここを有効にする
+"set t_u7=
+"set t_RV=
 
 "######################################################################################################################
 " http://nanasi.jp/articles/howto/file/seemingly-unneeded-file.html#id5
@@ -60,12 +105,12 @@ if has('win32')
 	set guifont=MS_Gothic:h12
 	"全角文字の設定
 	set guifontwide=MS_Gothic:h12
-"elseif has('mac')
-"	let ostype = "Mac"
-"elseif has('unix')
-"	let ostype = "Mac"
-"else
-"	let ostype = system("uname")
+elseif has('mac')
+	let ostype = "Mac"
+elseif has('unix')
+	let ostype = "unix"
+else
+	let ostype = system("uname")
 endif
 "フォントを変えたい場合、コマンドモードで以下を入力する
 ":set guifont=*
@@ -75,13 +120,6 @@ endif
 set ruler
 
 scriptencoding utf-8
-
-"設定ファイルを読み直す、コマンドモードで
-" :source ~/_gvimrc
-" :source ~/.gvimrc
-" wsl の場合、windows側からファイルを編集するとパーミッションが無くなるので、下記chmodどっちかをして直すこと。
-"    chmod 644 ~/.vimrc
-"    chmod 600 ~/.vimrc
 
 " 縦幅　デフォルトは24
 set lines=45
@@ -181,35 +219,49 @@ elseif has('mac')
 	let ostype = "Mac"
 elseif has('unix')
 	let ostype = "unix"
+	" ----------------------------------------------------------------------------------------------
 	"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
+	"↑:set iminsert=0 が動作しないので、fcitxの設定を変えることにした。
+	"# https://qiita.com/iberianpig/items/f43afb9d5ec0e2509695
+	" $HOME/.config/fcitx/config  を編集
+	"35行目あたりのInactivateKey
+	" # 入力メソッドをオフにして保存。fcitxを再起動する
+	" InactivateKey=ESCAPE CTRL_[
+	" ----------------------------------------------------------------------------------------------
+	"ノーマルモード（ h,j,k,l でカーソル移動するモード）最中でも、ESCを押すとIMEをOFFにする
+	"↑:set iminsert=0 が動作しない
+	"ここを有効にすると、vim がreplaceモードで起動してしまう。
 "	inoremap <ESC> <ESC>:set iminsert=0<CR>
 "	nnoremap <ESC> <ESC>:set iminsert=0<CR>
 "	noremap <ESC> <ESC>:set iminsert=0<CR>
 "	vnoremap <ESC> <ESC>:set iminsert=0<CR>
 "	cnoremap <ESC> <ESC>:set iminsert=0<CR>
+	" ----------------------------------------------------------------------------------------------
 	"使っている日本語入力システムに応じたコマンドを実行する
-	inoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	"ここを有効にすると、
+	"その１．vim がreplaceモードで起動してしまう。
+	"その２．ノーマルモードで矢印を使うと、なぜか、挿入モードに移行しアルファベットを入力してしまう
+"	inoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+"	nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+"	noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+"	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
 	" cnoremap を有効にすると、コマンドモードで矢印を使うと誤動作を起こす
-"	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+""	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
 else
 	let ostype = system("uname")
 endif
 
 " http://d.hatena.ne.jp/fuenor/20090416/1239834980
 " "挿入モード終了時にIME状態を保存しない
-inoremap <silent> <ESC> <ESC>
-inoremap <silent> <C-[> <ESC>
+"inoremap <silent> <ESC> <ESC>
+"inoremap <silent> <C-[> <ESC>
 " IMEモード固定
-inoremap <silent> <C-j> <C-^>
+"inoremap <silent> <C-j> <C-^>
 " ↑の「入力モードでのカーソル移動」と重なるので注意
 
 "ノーマルモード（コマンドモード）の<C-^>を無効化←AutoHotKeyと組み合わせる
 "http://blog.blueblack.net/item_393
-nnoremap <silent> <C-^> <Nop>
-
+"nnoremap <silent> <C-^> <Nop>
 
 "######################################################################################################################
 " WSL の Vim でもインサートモードを抜けるときに日本語入力を OFF にしたい
@@ -330,7 +382,7 @@ colorscheme darkblue
 
 if has('multi_byte_ime')
 "  highlight Cursor guifg=NONE guibg=DarkBlue
-	 highlight Cursor guifg=NONE guibg=Yellow
+	highlight Cursor guifg=NONE guibg=Yellow
 "  highlight CursorIM guifg=NONE guibg=Red
 	highlight CursorIM guifg=NONE guibg=Cyan
 endif
@@ -432,10 +484,9 @@ command! EX call EXECUTE_FILE()
 " 開いているファイル名をクリップボードにコピーする
 " https://qiita.com/sfuta/items/93fe58e6a7953413a815
 function! Fn_clip ()
-	let @*=expand('%:p')
-"	:echo @*
-"	:echo ('開いているファイル名をクリップボードにコピーする　：　' . @*)
-	:echo (@* . ' 　：　← 開いているファイル名をクリップボードにコピーする')
+	let file_nm=expand('%:p')
+"	:echo ('開いているファイル名をクリップボードにコピーする　：　' . file_nm)
+	:echo (file_nm . ' 　：　← 開いているファイル名をクリップボードにコピーする')
 endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! FN call Fn_clip()
@@ -467,6 +518,9 @@ function! Open_dir ()
 	elseif has('unix')
 		:echo ('unix')
 "		:echo (script_fullpath)
+		" ウィンドウマネージャー次第で、ここは変わる。
+		" Ubuntu MATE 20.04 の場合、cajaであり、ディレクトリしか開けない（ファイルの場所を開いて、ファイルを選択するのは不可能っぽい)
+		:call system('caja ' . '"' .   script_dir . '"')
 	else
 		:echo ('other')
 	endif
@@ -601,7 +655,9 @@ function! HandleURI()
 		elseif has('mac')
 			exec "!open \"" . s:uri . "\""
 		elseif has('unix')
-			exec "!open \"" . s:uri . "\""
+"			:echo system("\"" . s:uri . "\"" )
+			" Linux の場合、URLだけを渡してもだめ。ブラウザを指定する必要がある。
+			:echo system("/usr/bin/firefox" .  "  " . "\"" . s:uri . "\"" )
 		else
 			"let ostype = system("uname")
 			echo "unknown os"
