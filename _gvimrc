@@ -27,8 +27,17 @@ set imsearch=-1
 
 set scrolloff=2
 
+"######################################################################################################################
 "ビープ音を消す
 set vb t_vb=
+
+"######################################################################################################################
+"https://qiita.com/hkuno/items/4557f3f8d6b27d2884f2
+"    マウスクリック：カーソル位置、ウィンドウ選択、タブ選択
+"    マウスドラッグ：範囲選択、ウィンドウサイズ変更、タブ移動
+"    マウススクロール：ウィンドウ内スクロール
+set mouse=a
+set ttymouse=sgr
 "######################################################################################################################
 " *.un~ ファイルを作らない
 set noundofile
@@ -36,6 +45,10 @@ set noundofile
 ".un~ファイルのパス
 "set undodir=/PATH_TO/YOUR/UNDO_FILE_DIR/
 
+" gvim の場合、:q で終了させず、バッファのクリアにする
+"if has('gui_running')
+"	cnoremap :q :bd<CR>
+"endif
 "######################################################################################################################
 "検索の設定
 "https://qiita.com/KeitaNakamura/items/a289822827c8655b2dcd
@@ -109,6 +122,12 @@ elseif has('mac')
 	let ostype = "Mac"
 elseif has('unix')
 	let ostype = "unix"
+	if has('gui_running')
+"		set guifont=Monospace:h14
+"		set guifont=Monoregular:h14
+"		set guifontwide=Monospace:h16
+"		set guifontwide=Monoregular:h16
+	endif
 else
 	let ostype = system("uname")
 endif
@@ -336,20 +355,8 @@ endif
 " 「*レジスタ」にデータを入れると、クリップボードにデータが入るので、
 " vimエディタでヤンク、カットしたテキストを、 他のアプリケーションで即ペーストして使用できることになります。
 " " 無名レジスタに入るデータを、*レジスタにも入れる。
-set clipboard+=unnamed
-" ---------------------------------------------------------------------------------------------------------------
-" https://takeshid.hatenadiary.jp/entry/2015/09/08/001517
-" set clipboard=unnamed
-" は yankした文字をvim上の*レジスタ(無名レジスタ)に保存するようにする設定
-" set clipboard=unnamedplus
-" は yankした文字をvim上の+レジスタ(OSのクリップボード)に保存するようにする設定
+"set clipboard+=unnamed
 set clipboard=unnamed,unnamedplus
-" ---------------------------------------------------------------------------------------------------------------
-" https://nanasi.jp/articles/howto/editing/clipboard.html
-" vimエディタでクリップボードを使用するには、 vimエディタが「+clipboard」でコンパイルされている必要があります。
-" vimエディタのコンパイルオプションを確認するには、 vimエディタを起動して次のコマンドを実行してください。
-" :version
-" ---------------------------------------------------------------------------------------------------------------
 
 " ヤンクした内容が消えないようにする
 " https://qiita.com/ykyk1218/items/8f5471c5e90cc83fd407
@@ -534,7 +541,9 @@ function! Open_dir ()
 "		:echo (script_fullpath)
 		" ウィンドウマネージャー次第で、ここは変わる。
 		" Ubuntu MATE 20.04 の場合、cajaであり、ディレクトリしか開けない（ファイルの場所を開いて、ファイルを選択するのは不可能っぽい)
-		:call system('caja ' . '"' .   script_dir . '"')
+"		:call system('/usr/bin/caja ' . '"' .   script_dir . '"')
+		" Lubuntu のGUI(LXDE)のファイルマネージャー
+		:call system('/usr/bin/pcmanfm-qt ' . '"' .   script_dir . '"')
 	else
 		:echo ('other')
 	endif
@@ -666,8 +675,6 @@ function! HandleURI()
 	if s:uri != ""
 		if has('win32')
 			exec "!start \"" . s:uri . "\""
-"			:echo system("!start " .  "  " . "\"" . s:uri . "\"" )
-"			:call system("!start C:\bin64\FirefoxPortable\App\Firefox64\firefox.exe " .  "  " . "\"" . s:uri . "\"" )
 		elseif has('mac')
 			exec "!open \"" . s:uri . "\""
 		elseif has('unix')
