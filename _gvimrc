@@ -636,21 +636,24 @@ function! Set_sjis ()
 endfunction
 command! SETSJIS call Set_sjis()
 "######################################################################################################################
-" 開いているファイル名の履歴を作成する←まだwindowsのみ
+" 開いているファイル名の履歴を作成する←windowsとLinuxでテスト済み
 function! MAKE_HISTORY ()
 	":silent ! C:/bin/make_history.cmd   "%:p"
+	let file_fullpath = expand('%:p')
+	:echo(file_fullpath)
 	if has('win32')
 "		:silent ! C:/bin/make_history_classic.cmd   "%:p"
 "		:silent ! C:/bin/make_history.cmd   "%:p"
-		:silent ! C:\Miniconda3\python.exe    C:\bin\make_history.py   "%:p"
+		:silent ! C:\Miniconda3\python.exe    C:\bin\make_history.py   "file_fullpath"
 	elseif has('mac')
-	    let ostype = "Mac"
-	    python ~/make_history_py.py   "%:p"
+		let ostype = "Mac"
+		:echo system( "python3  ${HOME}/make_history.py  " . "\"" .  file_fullpath . "\"" )
 	elseif has('unix')
-	    let ostype = "unix"
-	    python ~/make_history_py.py   "%:p"
+		let ostype = "unix"
+		:echo system( "python3  ${HOME}/make_history.py  " . "\"" .  file_fullpath . "\"" )
+"		python3  ${HOME}/make_history_py   "file_fullpath"
 	else
-	    let ostype = system("uname")
+		let ostype = system("uname")
 	endif
 endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
