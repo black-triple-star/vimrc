@@ -299,9 +299,9 @@ endif
 "######################################################################################################################
 " https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
 " 挿入モードに入った時にカーソル形状が縦線で点滅に、置換モードでは下線で点滅に、挿入モード/置換モードから出た時に箱型で点滅に変わるようになります。 
-"let &t_SI .= "\e[5 q"
-"let &t_SR .= "\e[3 q"
-"let &t_EI .= "\e[1 q"
+let &t_SI .= "\e[5 q"
+let &t_SR .= "\e[3 q"
+let &t_EI .= "\e[1 q"
 
 "######################################################################################################################
 "https://ttssh2.osdn.jp/manual/ja/usage/tips/vim.html
@@ -325,19 +325,31 @@ endif
 
 
 "######################################################################################################################
-" コマンドモード時、y , p を押すと、alt + e + c , alt + e + p を押すようにする。kaoriya版gvim対応
-if has('win32')
+" gvimでコマンドモード時、y , p を押すと、alt + e + c , alt + e + p を押すようにする。kaoriya版gvim対応
+"Linux の gvimもあるので、またWindowsではwslのvimもあるので、条件式を変えた。
+"if has('win32')
+if has('gui_running')
 	" これを設定したせいで、yy （カレント行のコピー）が出来なくなったかも
 	nnoremap y y<M-e><M-c>
 	nnoremap p p<M-e><M-p>
 elseif has('mac')
 	let ostype = "Mac"
 elseif has('unix')
-	let ostype = "Mac"
+	let ostype = "unix"
 else
 	let ostype = system("uname")
 endif
 
+"######################################################################################################################
+" ノーマルモードとコマンドモードの際、ctrl + tab , ctrl + shift + tab , ctrl + PgUp , ctrl + shft + PgDn でタブを移動したい
+":tabp
+":tabn
+" ノーマルモード＋ビジュアルモード 	noremap 	map
+" コマンドラインモード＋インサートモード 	noremap! 	map!
+" ノーマルモード 	nnoremap 	nmap
+" ビジュアル(選択)モード 	vnoremap 	vmap
+" コマンドラインモード 	cnoremap 	cmap
+" インサート(挿入)モード 	inoremap 	imap
 "######################################################################################################################
 " ビジュアルモードで選択したテキストが、クリップボードに入るようにする。
 " http://nanasi.jp/articles/howto/editing/clipboard.html
