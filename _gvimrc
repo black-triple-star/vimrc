@@ -518,8 +518,23 @@ command! EX call EXECUTE_FILE()
 " https://qiita.com/sfuta/items/93fe58e6a7953413a815
 function! Fn_clip ()
 	let file_nm=expand('%:p')
-"	:echo ('開いているファイル名をクリップボードにコピーする　：　' . file_nm)
-	:echo (file_nm . ' 　：　← 開いているファイル名をクリップボードにコピーする')
+	if has('win32')
+"		:echo ('windows')
+	"	:echo ('開いているファイル名をクリップボードにコピーする　：　' . file_nm)
+		:echo (file_nm . ' 　：　← 開いているファイル名をクリップボードにコピーする')
+	elseif has('mac')
+"		:echo ('mac')
+	"	:echo ('開いているファイル名をクリップボードにコピーする　：　' . file_nm)
+		:echo (file_nm . ' 　：　← 開いているファイル名をクリップボードにコピーする')
+	elseif has('unix')
+"		:echo ('unix')
+	"	:echo ('開いているファイル名　：　' . file_nm)
+		:echo (file_nm . ' 　：　← 開いているファイル名')
+	else
+"		:echo ('other')
+	"	:echo ('開いているファイル名　：　' . file_nm)
+		:echo (file_nm . ' 　：　← 開いているファイル名')
+	endif
 endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! FN call Fn_clip()
