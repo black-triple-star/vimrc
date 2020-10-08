@@ -262,11 +262,12 @@ elseif has('unix')
 	"その１．vim がreplaceモードで起動してしまう。
 	"その２．ノーマルモードで矢印を使うと、なぜか、挿入モードに移行しアルファベットを入力してしまう
 "	inoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-"	nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-"	noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-"	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	" nnoremap , noremap , vnoremap の時は、アルファベットを入力する動作は無い
+	nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
 	" cnoremap を有効にすると、コマンドモードで矢印を使うと誤動作を起こす
-""	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+"	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
 else
 	let ostype = system("uname")
 endif
@@ -455,10 +456,11 @@ function! s:GetHighlight(hi)
   return hl
 endfunction
 
-if has('unix') && !has('gui_running')
-  " ESC後にすぐ反映されない対策
-  inoremap <silent> <ESC> <ESC>
-endif
+" Linux かつ入力モードで、矢印キーを使うと、ABCDが入力されてしまうので、コメントにする
+"if has('unix') && !has('gui_running')
+"  " ESC後にすぐ反映されない対策
+"  inoremap <silent> <ESC> <ESC>
+"endif
 
 "######################################################################################################################
 "全角スペースを表示
