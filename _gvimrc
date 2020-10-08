@@ -677,7 +677,7 @@ function! MAKE_HISTORY ()
 		:echo system( "python3  ${HOME}/make_history.py  " . "\"" .  file_fullpath . "\"" )
 	elseif has('unix')
 		let ostype = "unix"
-		# こういうコマンドを作って実行する
+		" こういうコマンドを作って実行する
 "		python3  ${HOME}/make_history_py   /home/user/test.txt
 		:echo system( "python3  ${HOME}/make_history.py  " . "\"" .  file_fullpath . "\"" )
 	else
