@@ -671,6 +671,7 @@ function! MAKE_HISTORY ()
 	if has('win32')
 "		:silent ! C:/bin/make_history_classic.cmd   "%:p"
 "		:silent ! C:/bin/make_history.cmd   "%:p"
+		" raw文字列( r"C:\Miniconda3\python.exe")  だと動かなかったので、\ を二重にした
 		:echo system( "C:\\Miniconda3\\python.exe   C:\\bin\\make_history.py "  . "\"" .  file_fullpath . "\"" )
 	elseif has('mac')
 		let ostype = "Mac"
