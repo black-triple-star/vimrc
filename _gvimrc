@@ -56,8 +56,10 @@ set ignorecase " 大文字小文字を無視
 set smartcase  " ignorecaseと合わせることで，小文字入力の時のみ大文字小文字を無視
 "set incsearch  " インクリメンタルサーチ
 set hlsearch   " 検索結果をハイライト
-nnoremap <silent> <ESC><ESC> :nohlsearch<CR> " ESCキー連打でハイライトを消す
-noremap <silent> <ESC><ESC> :nohlsearch<CR> " ESCキー連打でハイライトを消す
+" ESCキー連打でハイライトを消す
+nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+" ESCキー連打でハイライトを消す
+noremap <silent> <ESC><ESC> :nohlsearch<CR>
 
 "置換の際のgオプションをデフォルトで有効化する
 "set gdefault
@@ -68,18 +70,16 @@ noremap <silent> <ESC><ESC> :nohlsearch<CR> " ESCキー連打でハイライト�
 "set cursorline      " 現在の行をハイライト
 "hi clear CursorLine " 上と合わせることで行番号のみハイライト
 
-"CUIでVimを使用した際に生じるEscキーのディレイを解消（追記: 20160427）
-
+"CUIでVimを使用した際に生じるEscキーのディレイを解消
 if !has('gui_running')
 	set timeout timeoutlen=1000 ttimeoutlen=50
 endif
 
 
 "######################################################################################################################
-" Vim起動時にreplace modeになる
+" Vim起動時にreplace modeになる場合、ここを有効にする
 "https://github.com/vim-jp/issues/issues/578
 "https://qiita.com/e4bb81/items/524ae2664e48949d6bab
-" Vim起動時にreplace modeになる場合、ここを有効にする
 "set t_u7=
 "set t_RV=
 
@@ -671,7 +671,6 @@ function! MAKE_HISTORY ()
 	if has('win32')
 "		:silent ! C:/bin/make_history_classic.cmd   "%:p"
 "		:silent ! C:/bin/make_history.cmd   "%:p"
-		" raw文字列( r"C:\Miniconda3\python.exe")  だと動かなかったので、\ を二重にした
 		:echo system( "C:\\Miniconda3\\python.exe   C:\\bin\\make_history.py "  . "\"" .  file_fullpath . "\"" )
 	elseif has('mac')
 		let ostype = "Mac"
@@ -679,7 +678,7 @@ function! MAKE_HISTORY ()
 	elseif has('unix')
 		let ostype = "unix"
 		" こういうコマンドを作って実行する
-"		python3  ${HOME}/make_history.py   /home/user/test.txt
+"		python3  ${HOME}/make_history_py   /home/user/test.txt
 		:echo system( "python3  ${HOME}/make_history.py  " . "\"" .  file_fullpath . "\"" )
 	else
 		let ostype = system("uname")
