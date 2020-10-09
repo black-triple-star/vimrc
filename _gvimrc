@@ -56,6 +56,12 @@ set ignorecase " 大文字小文字を無視
 set smartcase  " ignorecaseと合わせることで，小文字入力の時のみ大文字小文字を無視
 "set incsearch  " インクリメンタルサーチ
 set hlsearch   " 検索結果をハイライト
+
+" バックスラッシュやクエスチョンを状況に合わせ自動的にエスケープ
+"https://lambdalisue.hatenablog.com/entry/2013/06/23/071344
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
+
 " ESCキー連打でハイライトを消す
 nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
 " ESCキー連打でハイライトを消す
@@ -75,7 +81,21 @@ if !has('gui_running')
 	set timeout timeoutlen=1000 ttimeoutlen=50
 endif
 
+"https://lambdalisue.hatenablog.com/entry/2013/06/23/071344
+set shiftround          " '<'や'>'でインデントする際に'shiftwidth'の倍数に丸める
+set infercase           " 補完時に大文字小文字を区別しない
+"set virtualedit=all     " カーソルを文字が存在しない部分でも動けるようにする
+set hidden              " バッファを閉じる代わりに隠す（Undo履歴を残すため）
+set switchbuf=useopen   " 新しく開く代わりにすでに開いてあるバッファを開く
+set showmatch           " 対応する括弧などをハイライト表示する
+set matchtime=3         " 対応括弧のハイライト表示を3秒にする
 
+" 前時代的スクリーンベルを無効化
+set t_vb=
+set novisualbell
+
+" デフォルト不可視文字は美しくないのでUnicodeで綺麗に
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲
 "######################################################################################################################
 " Vim起動時にreplace modeになる場合、ここを有効にする
 "https://github.com/vim-jp/issues/issues/578
