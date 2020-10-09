@@ -671,9 +671,10 @@ endfunction
 command! SETSJIS call Set_sjis()
 " ######################################################################################################################
 "改行コードを指定する
-:se ff=dos
-:se ff=mac
-:se ff=unix
+":se ff=dos
+":se ff=mac
+":se ff=unix
+" ---------------------------------------------------------------
 function! Set_crlf ()
 	:se ff=dos
 endfunction
