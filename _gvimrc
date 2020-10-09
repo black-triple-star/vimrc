@@ -268,9 +268,28 @@ elseif has('unix')
 	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
 	" cnoremap を有効にすると、コマンドモードで矢印を使うと誤動作を起こす
 "	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+	" ----------------------------------------------------------------------------------------------
+	"入力モードになった場合、IMEをonにする
+	"ただし、矢印を使うと、なぜか、挿入モードに移行しアルファベットを入力してしまうので、コメント
+	"inoremap <Esc> <Esc>:call system('fcitx-remote -o > /dev/null 2>&1')<CR>
 else
 	let ostype = system("uname")
 endif
+
+"######################################################################################################################
+" インサートモードを抜けたときに日本語入力だった場合のみ半角入力に戻す方法
+" https://kotaro7750.hatenablog.com/entry/eng_key_ubuntu#fcitx%E3%81%AE%E8%A8%AD%E5%AE%9A
+"if has('unix')
+"  autocmd InsertLeave * :call OffIME()
+"endif
+"function! OffIME() abort
+"  " fcitx-remote returns 1 if current method is mozc
+"  let l:fcitx_status = system('fcitx-remote')
+"  if fcitx_status == 1
+"    call system('fcitx-remote -s fcitx-keyboard-us')
+"  endif
+"endfunction
+"######################################################################################################################
 
 " http://d.hatena.ne.jp/fuenor/20090416/1239834980
 " "挿入モード終了時にIME状態を保存しない
