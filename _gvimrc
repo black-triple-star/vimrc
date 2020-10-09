@@ -620,6 +620,7 @@ command! R call Right_tab()
 " 開いているファイルのエンコードを得る
 function! Get_encode_of_currnet_file ()
 	:se fenc?
+	:se ff?
 endfunction
 " ユーザー定義関数の最初の一文字を大文字にしないとエラーとなる。
 command! GETENC call Get_encode_of_currnet_file()
@@ -664,6 +665,25 @@ function! Set_sjis ()
 	:set fenc=cp932
 endfunction
 command! SETSJIS call Set_sjis()
+" ######################################################################################################################
+"改行コードを指定する
+:se ff=dos
+:se ff=mac
+:se ff=unix
+function! Set_crlf ()
+	:se ff=dos
+endfunction
+command! SETCRLF call Set_crlf()
+" ---------------------------------------------------------------
+function! Set_cr ()
+	:se ff=mac
+endfunction
+command! SETCR call Set_cr()
+" ---------------------------------------------------------------
+function! Set_lf ()
+	:se ff=unix
+endfunction
+command! SETLF call Set_lf()
 "######################################################################################################################
 " 開いているファイル名の履歴を作成する←windowsとLinuxでテスト済み
 function! MAKE_HISTORY ()
