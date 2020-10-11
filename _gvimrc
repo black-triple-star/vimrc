@@ -274,24 +274,27 @@ elseif has('unix')
 "	inoremap <ESC> <ESC>:set iminsert=0<CR>
 "	nnoremap <ESC> <ESC>:set iminsert=0<CR>
 "	noremap <ESC> <ESC>:set iminsert=0<CR>
-"	vnoremap <ESC> <ESC>:set iminsert=0<CR>
-"	cnoremap <ESC> <ESC>:set iminsert=0<CR>
+""	vnoremap <ESC> <ESC>:set iminsert=0<CR>
+""	cnoremap <ESC> <ESC>:set iminsert=0<CR>
 	" ----------------------------------------------------------------------------------------------
 	"使っている日本語入力システムに応じたコマンドを実行する
 	"ここを有効にすると、
 	"その１．vim がreplaceモードで起動してしまう。
 	"その２．ノーマルモードで矢印を使うと、なぜか、挿入モードに移行しアルファベットを入力してしまう
-"	inoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	" nnoremap , noremap , vnoremap の時は、アルファベットを入力する動作は無い
-	nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	" cnoremap を有効にすると、コマンドモードで矢印を使うと誤動作を起こす
-"	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
-	" ----------------------------------------------------------------------------------------------
-	"入力モードになった場合、IMEをonにする
-	"ただし、矢印を使うと、なぜか、挿入モードに移行しアルファベットを入力してしまうので、コメント
-	"inoremap <Esc> <Esc>:call system('fcitx-remote -o > /dev/null 2>&1')<CR>
+	"コンソールでここを有効にすると表示が崩れるのでgvimのみとする
+	if has('gui_running')
+	"	inoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+		" nnoremap , noremap , vnoremap の時は、アルファベットを入力する動作は無い
+		nnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+		noremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+		vnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+		" cnoremap を有効にすると、コマンドモードで矢印を使うと誤動作を起こす
+	"	cnoremap <Esc> <Esc>:call system('fcitx-remote -c > /dev/null 2>&1')<CR>
+		" ----------------------------------------------------------------------------------------------
+		"入力モードになった場合、IMEをonにする
+		"ただし、矢印を使うと、なぜか、挿入モードに移行しアルファベットを入力してしまうので、コメント
+		"inoremap <Esc> <Esc>:call system('fcitx-remote -o > /dev/null 2>&1')<CR>
+	endif
 else
 	let ostype = system("uname")
 endif
