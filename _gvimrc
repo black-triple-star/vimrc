@@ -94,8 +94,6 @@ set matchtime=3         " 対応括弧のハイライト表示を3秒にする
 set t_vb=
 set novisualbell
 
-" デフォルト不可視文字は美しくないのでUnicodeで綺麗に
-set listchars=tab:≫-,trail:-,extends:≫,precedes:≪,nbsp:%,eol:?
 "######################################################################################################################
 " Vim起動時にreplace modeになる場合、ここを有効にする
 "https://github.com/vim-jp/issues/issues/578
