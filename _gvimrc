@@ -243,14 +243,18 @@ if has('win32')
 	"ESCで入力モードを抜けるとIMEをOFF、ノーマルモードでESCを打ってもimeをoff
 	"（なお、AutoHotKey でも対応した。これにより、teratermなどで編集中にも対応できるはず）
 "	inoremap <ESC> <ESC>:set imdisable<CR>
-	nnoremap <ESC> <ESC>:set iminsert=0<CR>
+"	nnoremap <ESC> <ESC>:set iminsert=0<CR>
 "	noremap <ESC> <ESC>:set iminsert=0<CR>
 "	vnoremap <ESC> <ESC>:set iminsert=0<CR>
 "	cnoremap <ESC> <ESC>:set iminsert=0<CR>
-	nnoremap <Esc> <Esc>:call system('C:\bin64\AutoHotkey\AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')<CR>:set iminsert=0<CR>
-	noremap <Esc> <Esc>:call system('C:\bin64\AutoHotkey\AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')<CR>:set iminsert=0<CR>
-	vnoremap <Esc> <Esc>:call system('C:\bin64\AutoHotkey\AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')<CR>:set iminsert=0<CR>
-	cnoremap <Esc> <Esc>:call system('C:\bin64\AutoHotkey\AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')<CR>:set iminsert=0<CR>
+	"set iminsert=0と、AutoHotKey でのime_offを両方行う
+	let AutoHotKey = 'C:\bin64\AutoHotkey\AutoHotkeyU64_v1.1.33.02.exe'
+	let AHK_FILE = 'C:\bin64\AutoHotkey\ime_off.ahk'"
+	inoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	nnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	noremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	vnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	cnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 " "	" 挿入モードに入った場合、imeをonにする。←が動作しない。
 " "	augroup InsertEnter
 " "		set iminsert=1
