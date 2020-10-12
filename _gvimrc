@@ -760,44 +760,6 @@ endfunction
 command! MK call MAKE_HISTORY()
 command! BK call MAKE_HISTORY()
 "######################################################################################################################
-" 開いているURL名をブラウザに送る。
-" http://d.hatena.ne.jp/shunsuk/20110508/1304865150
-function! HandleURI()
-"  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
-"  ヤフオクだとURLにセミコロンが含まれてるので、セミコロンを除去した。
-"  タブを区切り文字にした。
-"  URL に : が含まれていると、そこで止まってしまうので、完全ではない。
-"	let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:\t]*')
-"  ヤフオクだとURLにセミコロンが含まれてるので、セミコロンを除去した。
-	let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,\t]*')
-" # をエスケープ
-	let s:uri = substitute(s:uri , "#","\\\\#","g")
-" エンコードURLが入ってると%をファイル名に展開してしまうエラーがあるため、エスケープ
-	let s:uri = substitute(s:uri , "%","\\\\%","g")
-	echo s:uri
-	if s:uri != ""
-		if has('win32')
-			exec "!start \"" . s:uri . "\""
-		elseif has('mac')
-			exec "!open \"" . s:uri . "\""
-		elseif has('unix')
-"			:echo system("\"" . s:uri . "\"" )
-			" Linux の場合、URLだけを渡してもだめ。ブラウザを指定する必要がある。
-			" distroによっては、デフォルトブラウザをシンボリックリンクで保持しているかもしれない。
-			:echo system("/usr/bin/firefox" .  "  " . "\"" . s:uri . "\"" )
-		else
-			"let ostype = system("uname")
-			echo "unknown os"
-		endif
-	else
-		echo "No URI found in line."
-	endif
-endfunction
-
-"map <Leader>w :call HandleURI()<CR>
-command! BR call HandleURI()
-command! URL call HandleURI()
-"######################################################################################################################
 ":%s/検索語/置換語/g  の関数化をやるか。
 
 "######################################################################################################################
