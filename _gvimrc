@@ -540,12 +540,6 @@ endif
 set list
 " set listchars=tab:^\ ,trail:~
 " https://blog.delphinus.dev/2011/08/display-invisible-characters-on-vim.html
-" set listchars=tab:^-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%,trail:~
-"Tab、行の中の半角スペース、行末の半角スペースを明示的に表示する。
-" set listchars=tab:^-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%,trail:~,space:~
-
-
-" https://blog.delphinus.dev/2011/08/display-invisible-characters-on-vim.html
 "Tab、行の中の半角スペース、行末の半角スペースを明示的に表示する。
 set listchars=tab:^->,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space:~
 "set listchars=tab:>>,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space:~
@@ -577,7 +571,7 @@ set listchars=tab:^->,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space
 "	    “タブ”の表示を決定する。値は 2 文字で指定し、タブがスペース 8 文字に当たる場合、“»-------”などと表示される。
 "	trail:-
 "	    行末に続くスペースを表す表示。
-"	eol:↲
+"	eol:¶
 "	    改行記号を表す表示。
 "	extends:»
 "	    ウィンドウの幅が狭くて右に省略された文字がある場合に表示される。
