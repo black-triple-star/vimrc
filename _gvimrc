@@ -232,6 +232,7 @@ set showbreak=<WRAP>
 
 " ##########################################################################
 " ここを有効にすると、入力モードでエンターを押しても改行にならない（下矢印となる）のでコメント
+" 入力モードでエンターを押しても改行にならないのは、Linuxでのコンソールのみ
 " 入力モードでのカーソル移動
 "https://qiita.com/ssh0/items/9e7f0d8b8f033183dd0b
 "inoremap <C-j> <Down>
@@ -335,13 +336,17 @@ endif
 " WSL の Vim でもインサートモードを抜けるときに日本語入力を OFF にしたい
 " https://mmktomato.github.io/2018/04/02/disable-ime-on-wsl-vim.html
 function! s:isWsl()
-    return filereadable('/proc/sys/fs/binfmt_misc/WSLInterop')
+	return filereadable('/proc/sys/fs/binfmt_misc/WSLInterop')
 endfunction
-if s:isWsl() && executable('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe')
-    augroup insertLeave
-        autocmd!
-        autocmd InsertLeave * :call system('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')
-    augroup END
+let AutoHotKey = '/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe'
+let AHK_FILE = 'C:\bin64\AutoHotkey\ime_off.ahk'
+"if s:isWsl() && executable('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe')
+if s:isWsl() && executable( AutoHotKey )
+	augroup insertLeave
+	autocmd!
+"		autocmd InsertLeave * :call system('/mnt/C/bin64/AutoHotkey/AutoHotkeyU64_v1.1.33.02.exe "C:\bin64\AutoHotkey\ime_off.ahk"')
+		autocmd InsertLeave * :call system(AutoHotKey .  '  "' . AHK_FILE  . '"')
+	augroup END
 endif
 
 "######################################################################################################################
@@ -544,8 +549,8 @@ set list
 " set listchars=tab:^\ ,trail:~
 " https://blog.delphinus.dev/2011/08/display-invisible-characters-on-vim.html
 "Tab、行の中の半角スペース、行末の半角スペースを明示的に表示する。
-set listchars=tab:^->,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space:~
-"set listchars=tab:>>,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space:~
+set listchars=tab:^->,trail:~,eol:¶,extends:≫,precedes:≪,nbsp:%,trail:~,space:~
+"set listchars=tab:>>,trail:~,eol:¶,extends:≫,precedes:≪,nbsp:%,trail:~,space:~
 
 
 "	set listcharsで使える設定
@@ -553,7 +558,7 @@ set listchars=tab:^->,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space
 "	    eol:文字
 "	        行末の表示に使われる文字。指定されないと、行末には何も表示されない。
 "	    tab:2文字
-"	        タブ文字の表示に使われる文字。1文字目は1回だけ使われる。2文字目はタブが通常占めるだけの空白を埋めるまで繰り返し表示される。”tab:>-“ とすると、タブが4文字の設定では “>—” となる。指定されないと、タブは ^I と表示される。
+"	        タブ文字の表示に使われる文字。1文字目は1回だけ使われる。2文字目はタブが通常占めるだけの空白を埋めるまで繰り返し表示される。”tab:>-“ とすると、タブが4文字の設定では “>?” となる。指定されないと、タブは ^I と表示される。
 "	    space:文字
 "	        スペースの表示に使われる文字。指定されないと、スペースは空白のまま。
 "	    trail:文字
@@ -568,17 +573,17 @@ set listchars=tab:^->,trail:~,eol:¶,extends:»,precedes:«,nbsp:%,trail:~,space
 "	        ノーブレークスペース文字 (0xA0 (10進数では160) や U+202F) の表示に使われる文字。指定されない場合は空白のまま。訳注: 0xA0はLatin1で改行なしスペースを表す。
 "	
 "	不可視文字を表示しますよ。という設定。どのように表示するかは次の一行で決める。
-"	set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+"	set listchars=tab:≫-,trail:-,eol:?,extends:≫,precedes:≪,nbsp:%
 "	
-"	tab:»-
-"	    “タブ”の表示を決定する。値は 2 文字で指定し、タブがスペース 8 文字に当たる場合、“»-------”などと表示される。
+"	tab:≫-
+"	    “タブ”の表示を決定する。値は 2 文字で指定し、タブがスペース 8 文字に当たる場合、“≫-------”などと表示される。
 "	trail:-
 "	    行末に続くスペースを表す表示。
 "	eol:¶
 "	    改行記号を表す表示。
-"	extends:»
+"	extends:≫
 "	    ウィンドウの幅が狭くて右に省略された文字がある場合に表示される。
-"	precedes:«
+"	precedes:≪
 "	    extends と同じで左に省略された文字がある場合に表示される。
 "	nbsp:%
 "	    不可視のスペースを表す表示。ただし、この記号の通りに表示されるのは“&nbsp;”、つまり、ノーブレークスペースに限られており、ほかの不可視スペース
