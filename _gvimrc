@@ -549,8 +549,10 @@ set list
 " set listchars=tab:^\ ,trail:~
 " https://blog.delphinus.dev/2011/08/display-invisible-characters-on-vim.html
 "Tab、行の中の半角スペース、行末の半角スペースを明示的に表示する。
-set listchars=tab:^->,trail:~,eol:¶,extends:≫,precedes:≪,nbsp:%,trail:~,space:~
 "set listchars=tab:>>,trail:~,eol:¶,extends:≫,precedes:≪,nbsp:%,trail:~,space:~
+"set listchars=tab:^->,trail:~,eol:¶,extends:≫,precedes:≪,nbsp:%,trail:~,space:~
+set listchars=tab:^->,trail:~,eol:¶,extends:≫,precedes:≪,nbsp:%,trail:~
+set listchars=tab:^->,trail:~,eol:<,extends:≫,precedes:≪,nbsp:%,trail:~
 
 
 "	set listcharsで使える設定
