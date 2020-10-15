@@ -388,11 +388,12 @@ let &t_EI .= "\e[1 q"
 "######################################################################################################################
 " gvimでコマンドモード時、y , p を押すと、alt + e + c , alt + e + p を押すようにする。kaoriya版gvim対応
 "Linux の gvimもあるので、またWindowsではwslのvimもあるので、条件式を変えた。
-"if has('win32')
-if has('gui_running')
-	" これを設定したせいで、yy （カレント行のコピー）が出来なくなったかも
-	nnoremap y y<M-e><M-c>
-	nnoremap p p<M-e><M-p>
+if has('win32')
+	if has('gui_running')
+		" これを設定したせいで、yy （カレント行のコピー）が出来なくなったかも
+		nnoremap y y<M-e><M-c>
+		nnoremap p p<M-e><M-p>
+	endif
 elseif has('mac')
 	let ostype = "Mac"
 elseif has('unix')
