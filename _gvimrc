@@ -263,6 +263,20 @@ if has('win32')
 	noremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 	vnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 	cnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	" インサートモードではimeを利用不可、ノーマルモードとコマンドモードの時のみimeを利用可能にするようにしたが、誤動作するのでコメント
+	" インサートモードに入ったときに、set noimdisable の実行が極端に遅いようだ
+"	inoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:set noimdisable<CR>
+"	nnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:set imdisable<CR>
+"	noremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:set imdisable<CR>
+"	vnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:set imdisable<CR>
+"	cnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:set noimdisable<CR>
+	" インサートモードではimeを利用不可、ノーマルモードとコマンドモードの時のみimeを利用可能にするようにしたが、誤動作するのでコメント
+	" インサートモードに入ったときに、set noimdisable の実行が極端に遅い
+"	inoremap <Esc> <Esc>:set noimdisable<CR>
+"	nnoremap <Esc> <Esc>:set imdisable<CR>
+"	noremap <Esc> <Esc>:set imdisable<CR>
+"	vnoremap <Esc> <Esc>:set imdisable<CR>
+"	cnoremap <Esc> <Esc>:set noimdisable<CR>
 " "	" 挿入モードに入った場合、imeをonにする。←が動作しない。
 " "	augroup InsertEnter
 " "		set iminsert=1
