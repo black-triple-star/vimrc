@@ -263,6 +263,10 @@ if has('win32')
 	noremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 	vnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 	cnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	" ctrl+r で * , / したいのでimeをオフにする←まだ上手くいかない
+	inoremap <C-r> <C-r>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	cnoremap <C-r> <C-r>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	
 	" インサートモードではimeを利用不可、ノーマルモードとコマンドモードの時のみimeを利用可能にするようにしたが、誤動作するのでコメント
 	" インサートモードに入ったときに、set noimdisable の実行が極端に遅いようだ
 "	inoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:set noimdisable<CR>
@@ -305,6 +309,9 @@ elseif has('unix')
 	vnoremap <Esc> <Esc>:call system(cmd)<CR>:set iminsert=0<CR>
 "	cnoremap の設定を有効にすると、コマンドモードで矢印を入力すると、アルファベットを入力してしまう
 "	cnoremap <Esc> <Esc>:call system(cmd)<CR>:set iminsert=0<CR>
+	" ctrl+r で * , / したいのでimeをオフにする←まだ上手くいかない
+	inoremap <C-r> <C-r>:call system(cmd)<CR>:set iminsert=0<CR>
+	cnoremap <C-r> <C-r>:call system(cmd)<CR>:set iminsert=0<CR>
 	" ----------------------------------------------------------------------------------------------
 	"使っている日本語入力システムに応じたコマンドを実行する
 	"コンソールでここを有効にすると表示が崩れるのでgvimのみとする
