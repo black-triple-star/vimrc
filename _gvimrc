@@ -263,9 +263,12 @@ if has('win32')
 	noremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 	vnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
 	cnoremap <Esc> <Esc>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
-	" ctrl+r で * , / したいのでimeをオフにする←まだ上手くいかない
-	inoremap <C-r> <C-r>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
-	cnoremap <C-r> <C-r>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>
+	" ctrl+r で * , / する際、imeがオンだと＊／が入力されるので、imeをオフにする。
+	"一度、ノーマルモードに戻ってimeをオフにしてから、入力モード・コマンドモードに入り直す
+	inoremap <C-r> <ESC>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>a<C-r>
+	" コマンドモードの場合、%s/ のように途中まで入力した状態で、esc してモードの切り替えを行うと、途中まで入力した文字列がリセットされてしまうので、やらない
+	" ctrl + r で常にimeをoffにしたい場合、autohotkeyなど外部ツールを使うしかなさそう
+	"cnoremap <C-r> <ESC>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:<C-r>
 	
 	" インサートモードではimeを利用不可、ノーマルモードとコマンドモードの時のみimeを利用可能にするようにしたが、誤動作するのでコメント
 	" インサートモードに入ったときに、set noimdisable の実行が極端に遅いようだ
@@ -309,9 +312,12 @@ elseif has('unix')
 	vnoremap <Esc> <Esc>:call system(cmd)<CR>:set iminsert=0<CR>
 "	cnoremap の設定を有効にすると、コマンドモードで矢印を入力すると、アルファベットを入力してしまう
 "	cnoremap <Esc> <Esc>:call system(cmd)<CR>:set iminsert=0<CR>
-	" ctrl+r で * , / したいのでimeをオフにする←まだ上手くいかない
-	inoremap <C-r> <C-r>:call system(cmd)<CR>:set iminsert=0<CR>
-	cnoremap <C-r> <C-r>:call system(cmd)<CR>:set iminsert=0<CR>
+	" ctrl+r で * , / する際、imeがオンだと＊／が入力されるので、imeをオフにする。
+	"一度、ノーマルモードに戻ってimeをオフにしてから、入力モード・コマンドモードに入り直す
+	inoremap <C-r> <ESC>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>a<C-r>
+	" コマンドモードの場合、%s/ のように途中まで入力した状態で、esc してモードの切り替えを行うと、途中まで入力した文字列がリセットされてしまうので、やらない
+	" ctrl + r で常にimeをoffにしたい場合、autohotkeyなど外部ツールを使うしかなさそう
+	"cnoremap <C-r> <ESC>:call system(AutoHotKey .  '  "' . AHK_FILE  . '"')<CR>:set iminsert=0<CR>:<C-r>
 	" ----------------------------------------------------------------------------------------------
 	"使っている日本語入力システムに応じたコマンドを実行する
 	"コンソールでここを有効にすると表示が崩れるのでgvimのみとする
